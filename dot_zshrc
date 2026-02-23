@@ -1,0 +1,164 @@
+# Greeting
+fastfetch
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+# Completion system
+autoload -Uz compinit
+compinit
+
+# History configuration
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+
+# Key bindings
+bindkey -e  # Emacs-style keybindings
+
+# Plugins
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Initialize tools
+eval "$(zoxide init zsh)"
+eval "$(fzf --zsh)"
+
+# User bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# Default editor
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# Modern replacements
+alias ccat='bat'
+alias mcat='glow'
+alias md='glow'  # Direct glow access
+alias ls='eza --icons --group-directories-first -1'
+alias ll='eza --icons --group-directories-first -lah'
+alias la='eza --icons --group-directories-first -a'
+alias lt='eza --icons --group-directories-first --tree'
+alias cd='z'
+
+# Directory navigation shortcuts
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# Git aliases
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+alias glog='git log --oneline --graph --decorate'
+
+# Useful shortcuts
+alias vim='nvim'
+alias v='nvim'
+alias c='clear'
+alias h='history'
+alias grep='grep --color=auto'
+alias df='df -h'
+alias du='du -h'
+alias mkdir='mkdir -pv'
+
+# Tmux - smart session management
+# t / tmux: attach to "main" session, or create it if it doesn't exist
+# ta: fzf session picker (or create new named session)
+# tl: list sessions
+t() {
+  if [ -n "$TMUX" ]; then
+    echo "Already inside tmux."
+    return 0
+  fi
+  if tmux has-session -t main 2>/dev/null; then
+    tmux attach -t main
+  else
+    tmux new-session -s main
+  fi
+}
+
+ta() {
+  if [ -n "$TMUX" ]; then
+    # Inside tmux: switch session via fzf
+    local session
+    session=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | fzf --prompt="Switch session> " --header="Enter name to create new")
+    if [ -n "$session" ]; then
+      tmux switch-client -t "$session" 2>/dev/null || tmux new-session -d -s "$session" && tmux switch-client -t "$session"
+    fi
+    return 0
+  fi
+  # Outside tmux: pick a session to attach or create one
+  local sessions
+  sessions=$(tmux list-sessions -F '#{session_name}: #{session_windows} windows (#{session_attached} attached)' 2>/dev/null)
+  if [ -z "$sessions" ]; then
+    echo "No sessions. Creating 'main'..."
+    tmux new-session -s main
+    return
+  fi
+  local choice
+  choice=$(echo "$sessions" | fzf --prompt="Attach session> " --header="Type a name + Enter to create new")
+  if [ -n "$choice" ]; then
+    local name="${choice%%:*}"
+    tmux attach -t "$name" 2>/dev/null || tmux new-session -s "$name"
+  fi
+}
+
+alias tl='tmux list-sessions'
+alias tn='tmux new-session -s'
+
+# Kill session and scrub it from resurrect save file
+tk() {
+  if [ -z "$1" ]; then
+    echo "Usage: tk <session-name>"
+    return 1
+  fi
+  tmux kill-session -t "$1" 2>/dev/null
+  # Remove killed session from resurrect save so it doesn't come back
+  local save_dir="${XDG_DATA_HOME:-$HOME/.local/share}/tmux/resurrect"
+  local save_file="$save_dir/last"
+  if [ -L "$save_file" ]; then
+    local target="$(readlink "$save_file")"
+    [ ! "${target:0:1}" = "/" ] && target="$save_dir/$target"
+    if [ -f "$target" ]; then
+      sed -i '' "/^pane	${1}	/d;/^window	${1}	/d;/^state	${1}/d" "$target"
+    fi
+  fi
+}
+
+# File manager (yazi with CWD sync)
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+# System monitor
+alias top='btop'
+
+# Quick edit configs
+alias zshrc='nvim ~/.zshrc'
+alias nvimrc='nvim ~/.config/nvim/init.lua'
+
+# Browse and open WebOps docs
+docs() {
+  local file
+  file=$(fd -e md . ~/WebOps/docs | fzf --preview 'glow -s dark {}' --preview-window 'down,70%,border-top')
+  [ -n "$file" ] && nvim "$file"
+}
+
+# Mise is the single source of truth for runtimes
+eval "$(mise activate zsh)"

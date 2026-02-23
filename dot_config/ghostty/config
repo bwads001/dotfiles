@@ -1,0 +1,60 @@
+# Everforest Dark (Medium)
+# Background & Foreground
+background = #2d353b
+foreground = #d3c6aa
+
+# Cursor
+cursor-color = #d3c6aa
+
+# Selection
+selection-background = #503946
+selection-foreground = #d3c6aa
+
+# Black
+palette = 0=#475258
+palette = 8=#475258
+
+# Red
+palette = 1=#e67e80
+palette = 9=#e67e80
+
+# Green
+palette = 2=#a7c080
+palette = 10=#a7c080
+
+# Yellow
+palette = 3=#dbbc7f
+palette = 11=#dbbc7f
+
+# Blue
+palette = 4=#7fbbb3
+palette = 12=#7fbbb3
+
+# Magenta
+palette = 5=#d699b6
+palette = 13=#d699b6
+
+# Cyan
+palette = 6=#83c092
+palette = 14=#83c092
+
+# White
+palette = 7=#d3c6aa
+palette = 15=#d3c6aa
+
+# Font configuration
+font-family = "JetBrainsMonoNerdFont-Regular"
+font-size = 13
+
+# Window configuration
+window-padding-x = 8
+window-padding-y = 8
+window-decoration = true
+background-opacity = 0.90
+macos-non-native-fullscreen = true
+
+# Keybinds
+keybind = cmd+ctrl+f=toggle_fullscreen
+
+# Misc
+shell-integration = detect

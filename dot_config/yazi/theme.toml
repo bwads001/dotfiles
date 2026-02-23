@@ -1,0 +1,11 @@
+# Override Everforest flavor to fix unreadable mode text
+
+[mode]
+normal_main = { fg = "#000000", bg = "#a7c080", bold = true }
+normal_alt  = { fg = "#7fbbb3", bg = "#4f585e", bold = true }
+
+select_main = { fg = "#000000", bg = "#e67e80", bold = true }
+select_alt  = { fg = "#7fbbb3", bg = "#4f585e", bold = true }
+
+unset_main = { fg = "#000000", bg = "#7fbbb3", bold = true }
+unset_alt  = { fg = "#7fbbb3", bg = "#4f585e", bold = true }

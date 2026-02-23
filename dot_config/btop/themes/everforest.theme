@@ -1,0 +1,49 @@
+# Everforest theme for btop
+
+# Main background
+theme[main_bg]="#2d353b"
+
+# Main text color
+theme[main_fg]="#d3c6aa"
+
+# Title color
+theme[title]="#7fbbb3"
+
+# Highlight color
+theme[hi_fg]="#a7c080"
+
+# Selected item background
+theme[selected_bg]="#3d484d"
+theme[selected_fg]="#d3c6aa"
+
+# Inactive/Disabled color
+theme[inactive_fg]="#859289"
+
+# Graph colors for CPU, Memory, Network, Proc
+theme[cpu_box]="#7fbbb3"
+theme[mem_box]="#a7c080"
+theme[net_box]="#83c092"
+theme[proc_box]="#d699b6"
+
+# Gradient colors
+theme[gradient_start]="#a7c080"
+theme[gradient_end]="#e67e80"
+
+# Graph colors
+theme[graph_text]="#d3c6aa"
+
+# Meter colors
+theme[meter_bg]="#3d484d"
+
+# Process colors
+theme[proc_misc]="#83c092"
+theme[proc_cpu]="#7fbbb3"
+theme[proc_mem]="#a7c080"
+
+# Divider
+theme[div_line]="#475258"
+
+# Temperature colors
+theme[temp_start]="#a7c080"
+theme[temp_mid]="#dbbc7f"
+theme[temp_end]="#e67e80"
