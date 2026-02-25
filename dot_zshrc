@@ -153,6 +153,25 @@ alias top='btop'
 alias zshrc='chezmoi edit ~/.zshrc'
 alias nvimrc='chezmoi edit ~/.config/nvim/init.lua'
 
+# Chezmoi quick add + review (core dotfiles)
+chezme() {
+  chezmoi add \
+    ~/.config/nvim \
+    ~/.config/tmux \
+    ~/.config/opencode/AGENTS.md \
+    ~/.config/ghostty \
+    ~/.config/starship.toml \
+    ~/.config/yazi \
+    ~/.config/btop \
+    ~/.config/mise \
+    ~/.zshrc \
+    ~/.gitconfig \
+    ~/.ssh/config \
+    ~/hotkeys-cheatsheet.md
+  chezmoi status
+  chezmoi diff
+}
+
 # Browse and open WebOps docs
 docs() {
   local file
