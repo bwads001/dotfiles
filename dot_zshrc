@@ -149,9 +149,9 @@ function y() {
 # System monitor
 alias top='btop'
 
-# Quick edit configs
-alias zshrc='nvim ~/.zshrc'
-alias nvimrc='nvim ~/.config/nvim/init.lua'
+# Quick edit configs (via chezmoi so changes are tracked)
+alias zshrc='chezmoi edit ~/.zshrc'
+alias nvimrc='chezmoi edit ~/.config/nvim/init.lua'
 
 # Browse and open WebOps docs
 docs() {
